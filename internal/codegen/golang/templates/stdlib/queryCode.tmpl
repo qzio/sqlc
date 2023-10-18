@@ -40,7 +40,9 @@ func (q *Queries) {{.MethodName}}(ctx context.Context, {{ dbarg }} {{.Arg.Pair}}
     if err != nil {
         return nil, err
     }
-    defer rows.Close()
+    defer func () {
+      _ = rows.Close()
+    }()
     {{- if $.EmitEmptySlices}}
     items := []{{.Ret.DefineType}}{}
     {{else}}
